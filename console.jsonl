@@ -1,0 +1,17 @@
+{"level":"error","message":"[vite] Failed to reload /src/index.css. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793182939165}
+{"level":"error","message":"[vite] Failed to reload /src/lib/IndexerProvider.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793182939470}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793182939471}
+{"level":"debug","message":"[vite] hot updated: /src/lib/IndexerProvider.tsx","timestamp":1793182939471}
+{"level":"error","message":"[vite] Failed to reload /src/lib/IndexerProvider.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793182939702}
+{"level":"error","message":"[vite] Failed to reload /src/index.css. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793182939976}
+{"level":"debug","message":"[vite] hot updated: /src/lib/IndexerProvider.tsx","timestamp":1793182939976}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793182939977}
+{"level":"error","message":"[vite] Failed to reload /src/main.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793182940207}
+{"level":"info","message":"[hmr] /src/index.css failed to apply HMR as it's within a circular import. Reloading page to reset the execution order. To debug and break the circular import, you can run `vite --debug hmr` to log the circular dependency path if a file change triggered it.","timestamp":1793182940489}
+{"level":"error","message":"[vite] Failed to reload /src/index.css. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793182940489}
+{"level":"debug","message":"[vite] hot updated: /src/main.tsx","timestamp":1793182940490}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793182940490}
+{"level":"error","message":"[vite] Failed to reload /src/components/Layout.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793182940734}
+{"level":"error","message":"[vite] Failed to reload /src/index.css. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793182941005}
+{"level":"debug","message":"[vite] hot updated: /src/components/Layout.tsx","timestamp":1793182941005}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793182941006}

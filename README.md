@@ -4,6 +4,8 @@
 
 Built with [Arc Studio](https://studio.arc.io)
 
+**Demo video:** [Watch the walkthrough](https://drive.google.com/file/d/1qQ_EcGNpOl9iOclJSb-qq0nb7NOjc-ma/view?usp=sharing)
+
 ## What it is, and why it matters
 
 Buyers, investors and customers want proof that a business really earns what it says. Sites like TrustMRR provide that proof, but only for startups paid through Stripe-like processors, because that is the data they can verify. Founders paid in USDC have no trusted way to show their revenue.
@@ -68,20 +70,35 @@ Business `e2e-mvry2jly`: a 2 USDC one-time product and a 3 USDC monthly product,
 - **"Verified" means the USDC moved onchain, not that the payer is independent.** The owner and payout wallets cannot pay their own products, but a founder could pay from a separate wallet. That costs real USDC and fees, and the revenue page shows the customer count and the largest payer's share so readers can judge.
 - **Some customers cannot be refunded.** Refunds go straight to the paying wallet. If that wallet is a contract that rejects USDC, or is blocklisted on Arc, the refund cannot be made through the contract and the payment stays counted as revenue. This is a deliberate design choice. Refunds of an unexpired monthly plan must also go newest first.
 - **Monthly plans are prepaid, not automatic.** Customers renew by paying again. The contract never pulls money.
-- **No independent audit yet.** The contract has had automated security reviews and static analysis only. Get a professional audit before real funds.
-- **Testnet only today.** The app reads one network at a time and currently runs on Arc Testnet.
+- **Not independently audited, and now on mainnet.** The app moves real USDC. The contract has had automated security reviews and static analysis only, with no independent professional audit yet. The app reads one network at a time.
 
 ## Mainnet
 
-The `/deploy` page lets the owner deploy RevenueRouter to Arc Mainnet (chain ID 5042) by connecting their own wallet, such as Rabby, and signing the transaction. It shows the bytecode hashes to compare with a local build, and after deployment it checks that the onchain code matches. Nothing has been deployed to mainnet by Arc Studio.
+RevProof runs on **Arc Mainnet** (chain ID 5042) with real USDC. The owner deployed RevenueRouter from the app's `/deploy` page by signing with their own wallet. Arc Studio did not deploy to or send transactions on mainnet.
 
 | | |
 |---|---|
-| Mainnet RevenueRouter | _Not deployed yet. Address to be added here after the owner deploys._ |
-| Deployment transaction | _To be added_ |
-| Explorer | `https://explorer.arc.io/address/<address>` |
+| Mainnet RevenueRouter | [`0xd640457144bf3a8736fa885e7f39b78e8948c327`](https://explorer.arc.io/address/0xd640457144bf3a8736fa885e7f39b78e8948c327) |
+| Deployment transaction | [`0x80039a0f8d8376e7e029f534b00346aa18ef8259726ad116f4026ab8857b57c3`](https://explorer.arc.io/tx/0x80039a0f8d8376e7e029f534b00346aa18ef8259726ad116f4026ab8857b57c3) |
+| Deployed at block | 28307164 |
+| Deployer | [`0x8dc5730e440b7947750567edfb7f88af135f3602`](https://explorer.arc.io/address/0x8dc5730e440b7947750567edfb7f88af135f3602) |
+| Runtime bytecode keccak256 | `0x6ba27cd67f0b1c2a09cb18da0f356707eb20e75f50c83380ddea4c0475bc2a0f` |
 
-To switch the app to mainnet, set both values below and rebuild.
+The onchain runtime bytecode hash above matches the reviewed build in this repository (`forge build`, then `forge inspect RevenueRouter deployedBytecode | cast keccak`), and the `/deploy` page shows the same hash. The testnet contract above stays available for testing, but the app now reads and pays on mainnet only.
+
+### First real payment on mainnet
+
+The first business on the mainnet contract is `firsthand-data`, and its first sale was a 1 USDC test purchase of "Job data feed (monthly)" from a second wallet. The purchase went through the deployed RevenueRouter in a single transaction, and the USDC was forwarded to the business's payout wallet in the same transaction.
+
+| Step | Transaction | Block |
+|---|---|---|
+| Business registration | [`0x3579c106d40129323ddfef3bf2e823bddd560814677dc27948c0a6351846529a`](https://explorer.arc.io/tx/0x3579c106d40129323ddfef3bf2e823bddd560814677dc27948c0a6351846529a) | 28309518 |
+| Product creation, "Job data feed (monthly)" | [`0x59a007393956ca8c9499e0b1e399c68a2af2053a1df362bbc5839d022f0900d8`](https://explorer.arc.io/tx/0x59a007393956ca8c9499e0b1e399c68a2af2053a1df362bbc5839d022f0900d8) | 28338883 |
+| First purchase, 1 USDC (second wallet) | [`0xe2cb752a7c8bf144ccc079d746a9d05f24c6bcf5e57b270c458820f27733e87f`](https://explorer.arc.io/tx/0xe2cb752a7c8bf144ccc079d746a9d05f24c6bcf5e57b270c458820f27733e87f) | 28348133 |
+
+Public revenue page for this business: https://creative-squirrel-17ca20.netlify.app/m/firsthand-data
+
+The app picks its network from the environment. With `VITE_MAINNET_ROUTER_ADDRESS` and `VITE_MAINNET_DEPLOY_BLOCK` set it runs on Arc Mainnet, and with both empty it falls back to Arc Testnet.
 
 ## Development
 
@@ -102,13 +119,13 @@ bun run contracts:test   # run the 117 contract tests
 
 All values are public.
 
-- `VITE_ROUTER_ADDRESS`: the Arc Testnet RevenueRouter address.
+- `VITE_ROUTER_ADDRESS`: the Arc Testnet RevenueRouter address (used when no mainnet address is set).
 - `VITE_ROUTER_DEPLOY_BLOCK`: the block it was deployed at. The app never reads history before it.
-- `VITE_MAINNET_ROUTER_ADDRESS`: optional. When set, the whole app uses this Arc Mainnet contract and real USDC.
-- `VITE_MAINNET_DEPLOY_BLOCK`: required with the mainnet address.
+- `VITE_MAINNET_ROUTER_ADDRESS`: when set, the whole app uses this Arc Mainnet contract and real USDC. Currently `0xd640457144bf3a8736fa885e7f39b78e8948c327`.
+- `VITE_MAINNET_DEPLOY_BLOCK`: required with the mainnet address. Currently `28307164`.
 
 Restart the dev server after changing `.env`. On a host such as Netlify or Vercel, set the same names in the build environment.
 
 ### Live end-to-end test
 
-`contracts/test-integration/e2e-testnet.ts` runs the testnet flow above with two throwaway wallets whose keys it reads from `/tmp`.
+`contracts/test-integration/e2e-testnet.ts` runs the testnet flow above with two throwaway wallets whose keys it reads from `/tmp`. It refuses to run while a mainnet address is configured; clear the two `VITE_MAINNET_*` values first.

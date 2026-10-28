@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { Link, useLocation } from '@/lib/nav'
 import { Amount, usdcToGasToken } from '@/onchain-money'
 import { useIndexer, useNow } from '@/lib/IndexerProvider'
-import { BILLING_LABEL, CHAIN, CHAIN_ID, ROUTER_ADDRESS, USDC_ADDRESS, USDC_DECIMALS, addressUrl, routerAbi, txUrl } from '@/lib/contract'
+import { BILLING_LABEL, CHAIN, CHAIN_ID, IS_MAINNET, ROUTER_ADDRESS, USDC_ADDRESS, USDC_DECIMALS, addressUrl, routerAbi, txUrl } from '@/lib/contract'
 import { bytes32ToOrderRef, fmtDate, fmtUsd, orderRefToBytes32, parseOnchainError, shortAddress } from '@/lib/format'
 import { EmptyState, ExplorerLink, Notice, Skeleton, Spinner } from '@/components/ui'
 
@@ -271,7 +271,7 @@ export function Checkout({ productId }: { productId: number }) {
           )}
           {insufficient && !wrongChain && (
             <Notice>
-              You need {fmtUsd(price)} plus a small network fee. Use "Get test USDC" in the Arc Studio sidebar to top up.
+              You need {fmtUsd(price)} plus a small network fee in USDC. {IS_MAINNET ? 'Add USDC to your wallet on Arc Mainnet to continue.' : 'Use "Get test USDC" in the Arc Studio sidebar to top up.'}
             </Notice>
           )}
           {error && <Notice tone="error">{error}</Notice>}

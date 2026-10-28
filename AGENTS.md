@@ -15,10 +15,11 @@ Verified USDC revenue for businesses paid on Arc (think TrustMRR for stablecoin 
 - Frontend: React 18, Vite, TypeScript, Tailwind CSS (Arc Light tokens in `src/index.css`), tiny history-based router in `src/lib/nav.tsx`
 - Web3: wagmi v2, viem v2, ConnectKit
 - Contracts: Solidity 0.8.28 + Foundry. `contracts/RevenueRouter.sol`, tests in `contracts/test/RevenueRouter.*.t.sol` (117 passing). `bun run contracts:build`, `bun run contracts:test`.
-- Chain: Arc Testnet (5042002). Facts come from `@/onchain-facts`.
+- Chain: Arc Mainnet (5042) since the owner's deployment; Arc Testnet (5042002) is the fallback when no mainnet address is configured. Facts come from `@/onchain-facts`.
 
 ## Deployments
 
+- RevenueRouter on Arc Mainnet (deployed by the owner via /deploy): `0xd640457144bf3a8736fa885e7f39b78e8948c327`, tx `0x80039a0f8d8376e7e029f534b00346aa18ef8259726ad116f4026ab8857b57c3`, block 28307164, runtime keccak `0x6ba27cd67f0b1c2a09cb18da0f356707eb20e75f50c83380ddea4c0475bc2a0f`. Set in `.env` as `VITE_MAINNET_ROUTER_ADDRESS` / `VITE_MAINNET_DEPLOY_BLOCK`.
 - RevenueRouter on Arc Testnet: `0xac52e885bca21a3a7809ad7270c78530ba84db08`
 - Deploy tx: `0x7d53375448ff8c086b02bbe9ebf92f106b1574732d1e6140dce45dcf89358ff0`, block 69346790
 - Stored in `.env` as `VITE_ROUTER_ADDRESS` and `VITE_ROUTER_DEPLOY_BLOCK` (restart Vite after changing).

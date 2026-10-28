@@ -11,11 +11,13 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { createPublicClient, createWalletClient, erc20Abi, http, parseEventLogs, type Hex } from 'viem'
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts'
 import { arcTestnet } from 'viem/chains'
-import { ROUTER_ADDRESS, RPC_URL, USDC_ADDRESS, routerAbi, DEPLOY_BLOCK } from '../../src/lib/contract'
+import { IS_MAINNET, ROUTER_ADDRESS, RPC_URL, USDC_ADDRESS, routerAbi, DEPLOY_BLOCK } from '../../src/lib/contract'
 import { decodeLogs, derive, fetchLogs } from '../../src/lib/indexer'
 import { computeLeaderboard, computeMerchantMetrics } from '../../src/lib/metrics'
 import { buildBadgeSnippet } from '../../src/components/BadgeEmbed'
 import { orderRefToBytes32 } from '../../src/lib/format'
+
+if (IS_MAINNET) throw new Error('Refusing to run: a mainnet router is configured. This script sends real transactions and is for Arc Testnet only.')
 
 const load = (file: string) => {
   const raw = JSON.parse(readFileSync(file, 'utf8')) as { private_key: Hex } | { private_key: Hex }[]
